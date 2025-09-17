@@ -1,0 +1,5 @@
+export const SPEEDY_CHOW = "Speedy Chow"
+export const MODERN_ADMIN_PANEL = "Modern admin panel"
+export const DASHBOARD = "Dashboard"
+export const USERS = "Users"
+export const ADD_PRODUCT="Add Product"

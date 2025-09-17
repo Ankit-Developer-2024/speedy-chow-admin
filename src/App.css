@@ -1,0 +1,10 @@
+#root {
+  margin:0;
+  padding: 0; 
+}
+
+
+.active{
+  background-color: var(--color-orange-200);
+  color: var(--color-orange-500)
+}
