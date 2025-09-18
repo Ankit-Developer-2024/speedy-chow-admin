@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {fetchAllUser} from './userApi'
+import {createUser, deleteUser, fetchAllUser, updateUser} from './userApi'
 
 export const fetchAllUserAsync = createAsyncThunk(
     'user/fetchAllUser',
@@ -8,6 +8,30 @@ export const fetchAllUserAsync = createAsyncThunk(
         return data;
     }
 
+)
+
+export const createUserAsync = createAsyncThunk(
+    'user/createUser',
+    async(args)=>{
+        const data = await createUser(args);
+        return data;
+    }
+)
+
+export const updateUserAsync = createAsyncThunk(
+    'user/updateUser',
+    async(args)=>{
+        const data = await updateUser(args);
+        return data;
+    }
+)
+
+export const  deleteUserAsync = createAsyncThunk(
+    'user/deleteUser',
+    async(id)=>{
+        const data = await deleteUser(id);
+        return data;
+    }
 )
 
 const initialState= { 
@@ -42,7 +66,56 @@ export const userSlice = createSlice({
                 state.message=actions.error.message
                 state.success=false;
                 state.data=[]
-            })
+        })
+        .addCase(createUserAsync.pending,(state)=>{
+            state.loading=true, 
+            state.success=false
+        })
+        .addCase(createUserAsync.fulfilled,(state,actions)=>{
+            state.loading=false;
+            state.message=actions.payload.message
+           state.success=actions.payload.success; 
+        })
+        .addCase(createUserAsync.rejected,(state,actions)=>{
+                state.loading=false;
+                state.message=actions.error.message
+                state.success=false; 
+        })
+         .addCase(deleteUserAsync.pending,(state)=>{
+            state.loading=true, 
+            state.success=false
+        })
+        .addCase(deleteUserAsync.fulfilled,(state,actions)=>{
+            state.loading=false;
+            state.message=actions.payload.message
+           state.success=actions.payload.success; 
+           if(state.success){
+            state.data=state.data.filter((u)=>u.id!==actions.payload.data.id) 
+           }
+        })
+        .addCase(deleteUserAsync.rejected,(state,actions)=>{
+                state.loading=false;
+                state.message=actions.error.message
+                state.success=false; 
+        })
+          .addCase(updateUserAsync.pending,(state)=>{
+            state.loading=true, 
+            state.success=false
+        })
+        .addCase(updateUserAsync.fulfilled,(state,actions)=>{
+            state.loading=false;
+            state.message=actions.payload.message
+           state.success=actions.payload.success; 
+           if(state.success){
+            let index=state.data.findIndex((user)=>user.id===actions.payload.data.id) 
+            state.data.splice(index,1,actions.payload.data) 
+           }
+        })
+        .addCase(updateUserAsync.rejected,(state,actions)=>{
+                state.loading=false;
+                state.message=actions.error.message
+                state.success=false; 
+        })
     }
 
 })

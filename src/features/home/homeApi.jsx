@@ -21,10 +21,32 @@ export const createProduct = async (formData) => {
         }
         )
         return response.data
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error) { 
         return error.response.data
+    }
+}
+
+
+export const updateProduct = async (formData,id) => {
+    try { 
+        const response = await axiosInstance.patch(PRODUCT+id, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+        ) 
+        return response.data
+    } catch (error) { 
+        return error.response.data
+    }
+}
+
+export const deleteProduct = async (id) => {
+    try {
+        const response = await axiosInstance.delete(PRODUCT+id) 
+        return response.data
+    } catch (error) {
+        return error.response.data;
     }
 }
 

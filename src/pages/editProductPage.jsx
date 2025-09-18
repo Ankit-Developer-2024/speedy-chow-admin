@@ -1,7 +1,7 @@
 import { CreateEditProduct } from "../features/home/createEditProduct"; 
 import SideBar from "../features/sideBar/sideBar"; 
 
-export const CreateProductPage = function () {
+export const EditProductPage = function () {
     return (
         <div>
              <SideBar>
