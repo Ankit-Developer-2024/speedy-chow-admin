@@ -6,6 +6,7 @@ import { category, createProductAsync, message, fetchCategoryAsync, loading, upd
 import { Loader } from "../../app/components/loader"
 import { useLocation } from "react-router";
 import toast, { Toaster } from 'react-hot-toast';
+import { getImageUrlFromBuffer } from "../../utils/utility";
 
 
 export const CreateEditProduct = () => {
@@ -118,8 +119,7 @@ export const CreateEditProduct = () => {
             setValue('category', product.category)
             setValue('deleted', product.deleted)
 
-            const base64String = btoa(String.fromCharCode(...new Uint8Array(product.image.data)));
-            let imgurl = `data:${product.imageType};base64,${base64String}`
+            let imgurl = getImageUrlFromBuffer(product.image.data,product.imageType) 
 
             setPreview(imgurl);
 

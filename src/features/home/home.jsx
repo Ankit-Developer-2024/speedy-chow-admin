@@ -1,24 +1,49 @@
 import { CiSearch } from "react-icons/ci";
-import { ADD_PRODUCT, DASHBOARD } from "../../app/strings/appStrings";
-import burgerImg from "../../assets/burger.jpeg"
+import { ADD_PRODUCT, DASHBOARD } from "../../app/strings/appStrings"; 
 import { FaStar } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductAsync, data, loading, deleteProductAsync } from "./homeSlice";
+import { fetchProductAsync, data, loading, deleteProductAsync, category, fetchCategoryAsync, searchData, searchProductAsync, searchLoading } from "./homeSlice";
 import { useNavigate } from "react-router";
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from "../../app/components/loader";
 import { POPModal } from "../../app/components/popModel";
+import { getImageUrlFromBuffer } from "../../utils/utility";
 
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const products = useSelector(data)
+  const searchedData = useSelector(searchData) 
+  const categories = useSelector(category)
   const isLoading = useSelector(loading)
   const [isModalopen, setModalOpen] = useState(false);
+  const [selectedCategory,setSelectedCategory]=useState([]) 
+  const selectedSearchName = useRef("");
+
+
+  function handleProductSearch(e) {  
+    if(e.target.value){
+    const data={qName:e.target.value}
+    dispatch(searchProductAsync(data))
+   }
+    selectedSearchName.current=e.target.value 
+   if(e.target.value.length==0){
+    let data={admin:true}
+    dispatch(fetchProductAsync(data))
+   }
+  }
+
+  function handleSearchSelection(pName) {    
+    selectedSearchName.current=pName 
+    handleCategorySelection(-1)
+  }
+  
+  
 
   function handleProductDeleteion(id) {
     setModalOpen(false)
@@ -31,16 +56,53 @@ export default function Home() {
     })
   }
 
+  function handleCategorySelection(category) { 
+    let data;
+    let finalCategory;
+   if(selectedCategory.includes(category)){
+     finalCategory=selectedCategory.filter((c)=>c!==category)
+     data={
+      admin:true,
+      category:finalCategory,
+      qName:selectedSearchName.current
+    }
+   
+   }else{
+     finalCategory=category===-1 ? [] : [...selectedCategory,category] 
+    data={
+      admin:true,
+      category:finalCategory,
+      qName:selectedSearchName.current
+    } 
+    
+   }
+   
+    dispatch(fetchProductAsync(data)).unwrap().then((val) => {
+      if (val.success) {  
+        (() => toast.success(val.message))();
+      } else {
+        (() => toast.error(val.message))();
+      }
+    })
+    setSelectedCategory((selectedCategory)=>finalCategory)
+    
+    
+  }
+
   useEffect(() => {
-    dispatch(fetchProductAsync()).unwrap().then((val) => {
+    let data={admin:true}
+    dispatch(fetchProductAsync(data)).unwrap().then((val) => {
       if (val.success) { 
         (() => toast.success(val.message))();
       } else {
         (() => toast.error(val.message))();
       }
     })
-  }, [dispatch])
+    dispatch(fetchCategoryAsync())
 
+  }, [dispatch])
+ 
+  
   return (
     <>
 
@@ -53,13 +115,22 @@ export default function Home() {
           <div className="w-full px-5 py-3 relative">
         <Toaster />
        
-        <div className="flex flex-row items-center justify-between bg-white rounded-sm pr-2 w-sm">
+        <div className="w-sm relative">
+          <div className="flex flex-row items-center justify-between bg-white rounded-sm pr-2 ">
           <input
-            type="text"
-            className="bg-white rounded-sm  outline-0 px-2 py-1"
+            type="text" 
+            value={selectedSearchName.current ?? ""}
+            onChange={(e)=>handleProductSearch(e)}
+            className="bg-white rounded-sm w-full outline-0 px-2 py-1"
             placeholder="Search..."
           />
-          <CiSearch className="" />
+          <CiSearch  /> 
+        </div>
+         {searchedData!==0 && <ol className="bg-white w-sm absolute  z-1 ">
+          {
+          searchedData.map((product,index)=><li key={index} onClick={()=>handleSearchSelection(product.name)} className="w-full px-2 pb-0.5 rounded-sm hover:bg-amber-500 font-medium text-md">{product.name}</li>)
+          }
+         </ol>}
         </div>
 
         <br />
@@ -71,26 +142,43 @@ export default function Home() {
             <p className="text-sm text-gray-400">Hi, Ankit. Welcome back to Sppedy Chow Admin panel</p>
           </div>
 
-          <button
+         <div className="flex flex-row items-center justify-end gap-3">
+           <select name="category" onChange={(e)=>handleCategorySelection(e.target.value)} className="bg-orange-400 text-white text-md font-medium p-2.5 rounded-md "  >
+            <option  className="bg-white text-black" value="">Category</option>
+            {
+              categories.map((category)=>{
+                return <option key={category.id} className="bg-white text-black" value={category.name}>{category.name}</option>
+              })
+            }
+             
+           </select>
+           <button
             onClick={() => navigate('/create-product')}
             className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
           >{ADD_PRODUCT}</button>
+         
+         </div>
         </div>
-
+         {selectedCategory.length!==0 && <p className="flex flex-row items-center justify-end text-md gap-2 font-medium">
+          {selectedCategory.map((category,index)=>{
+              return <span key={index} className="bg-green-600 rounded-xl text-white px-2">{category} {<RxCross2 onClick={()=>handleCategorySelection(category)} className="inline font-extrabold hover:bg-gray-50 rounded-xl hover:text-gray-600 text-xl"/>}</span>
+          })}
+        
+          </p>}
         <br />
 
         {/* items */}
         <div className="flex flex-wrap justify-start gap-5">
           {/* item */}
 
-          {
+          { products.length===0 && isLoading===false ? <p className="text-xl font-bold text-center m-auto">No products found.</p>  :
             products.map((product) => {
-              return <div key={product.id} className="bg-white rounded-xl px-5 py-3 xl:w-[450px] relative">
+              return <div key={product.id} className="bg-white rounded-xl px-5 py-3 w-[350px] relative">
                      {isModalopen && (
                     <POPModal onClose={() => setModalOpen(false)} onOk={() => handleProductDeleteion(product.id)}>
                       <div className="w-full">
                         <h2 className="text-2xl font-bold text-center">Confirmation</h2>
-                        <p className="text-xl font-medium ">Are you sure you want to permanent delete user from database?</p>
+                        <p className="text-xl font-medium ">Are you sure you want to permanent delete product from database?</p>
                       </div>
                     </POPModal>
                   )}
@@ -99,7 +187,7 @@ export default function Home() {
                   <MdDeleteOutline onClick={()=>setModalOpen(true)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200 " />
                 </div>
 
-                <img className=" w-[250px] bg-gray-300 m-auto" src={burgerImg} alt="Product Image" loading="lazy" />
+                <img className="w-full h-[250px] object-cover rounded-xl bg-gray-300 m-auto" src={getImageUrlFromBuffer(product.image.data,product.imageType)} alt="Product Image" loading="lazy" />
                 <h3 className="font-medium">{product.name}</h3>
                 <div className="flex flex-row items-center justify-start gap-2">
                   <FaStar className="text-orange-600" />

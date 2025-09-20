@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { createProduct, deleteProduct, fetchCategory, fetchProduct, updateProduct } from './homeApi'
+import { createProduct, deleteProduct, fetchCategory, fetchProduct, searchProduct, updateProduct } from './homeApi'
 
 export const fetchProductAsync = createAsyncThunk(
     'home/fetchProduct',
-    async()=>{
-         const data= await fetchProduct();  
+    async(args)=>{
+         const data= await fetchProduct(args);  
          return data;
     }
 )
@@ -46,12 +46,22 @@ export const fetchCategoryAsync = createAsyncThunk(
     }
 )
 
+export const searchProductAsync = createAsyncThunk(
+    'home/searchProduct',
+    async(args)=>{
+         const data= await searchProduct(args);  
+         return data;
+    }
+)
+
 
 const initialState= { 
     loading:false,
     success:false,
     message:null,
     data:[],
+    searchData:[],
+    searchLoading:false,
     category:[],
   };
 
@@ -62,17 +72,14 @@ export const homeSlice = createSlice({
   extraReducers: (builder)=>{
     builder.addCase(fetchProductAsync.pending,(state)=>{
         state.loading=true;
+        state.searchData=[]
         state.success=false; 
     })
     .addCase(fetchProductAsync.fulfilled,(state,actions)=>{
-        state.loading=false;
+        state.loading=false; 
         state.message=actions.payload.message 
-        if(actions.payload.success){
-            state.success=true;
-            state.data= actions.payload.data  
-        }else{
-            state.success=false; 
-        }
+        state.success=actions.payload.success; 
+        state.data= actions.payload.data  
     })
     .addCase(fetchProductAsync.rejected,(state,actions)=>{
         state.loading=false;
@@ -143,16 +150,25 @@ export const homeSlice = createSlice({
     .addCase(updateProductAsync.fulfilled,(state,actions)=>{
         state.loading=false;
         state.message=actions.payload.message 
-        console.log(state.message);
-        
-        if(actions.payload.success){
-            state.success=true; 
-        }else{
-            state.success=false; 
-        }
+        state.success=actions.payload.success; 
     })
     .addCase(updateProductAsync.rejected,(state,actions)=>{
         state.loading=false;
+        state.message=actions.error.message
+        state.success=false; 
+    })
+     .addCase(searchProductAsync.pending,(state)=>{ 
+        state.searchLoading=true;
+        state.success=false; 
+    })
+    .addCase(searchProductAsync.fulfilled,(state,actions)=>{
+        state.searchLoading=false;
+        state.message=actions.payload.message 
+        state.success=actions.payload.success; 
+        state.searchData=actions.payload.data
+    })
+    .addCase(searchProductAsync.rejected,(state,actions)=>{
+        state.searchLoading=false;
         state.message=actions.error.message
         state.success=false; 
     })
@@ -165,5 +181,7 @@ export const data = (state)=>state.home.data;
 export const loading = (state)=>state.home.loading; 
 export const message = (state)=>state.home.message; 
 export const category = (state)=>state.home.category; 
+export const searchData = (state)=>state.home.searchData; 
+export const searchLoading = (state)=>state.home.searchLoading; 
 
 export default homeSlice.reducer
