@@ -23,7 +23,8 @@ export const createUser = async (data) => {
 
 export const updateUser = async (userData) => {
     try {  
-        let {id,data}=userData
+        let {id,data}=userData 
+        
         const response = await axiosInstance.patch(USER+id,data)
         return response.data
     } catch (error) {
@@ -34,6 +35,15 @@ export const updateUser = async (userData) => {
 export const deleteUser = async (id) => {
     try {
         const response = await axiosInstance.delete(USER+id)
+        return response.data
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+export const deleteMultipleUser = async (data) => {
+    try {
+        const response = await axiosInstance.delete(USER,{data})
         return response.data
     } catch (error) {
         return error.response.data;

@@ -4,11 +4,13 @@ import burgerImg from "../../assets/burger.jpeg"
 import { FaStar } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductAsync, data, loading, deleteProductAsync } from "./homeSlice";
 import { useNavigate } from "react-router";
 import toast, { Toaster } from 'react-hot-toast';
+import { Loader } from "../../app/components/loader";
+import { POPModal } from "../../app/components/popModel";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -16,8 +18,10 @@ export default function Home() {
 
   const products = useSelector(data)
   const isLoading = useSelector(loading)
+  const [isModalopen, setModalOpen] = useState(false);
 
   function handleProductDeleteion(id) {
+    setModalOpen(false)
     dispatch(deleteProductAsync(id)).unwrap().then((val) => {
       if (val.success) { 
         (() => toast.success(val.message))();
@@ -40,8 +44,15 @@ export default function Home() {
   return (
     <>
 
-      <div className="w-full px-5 py-3 ">
+       {
+          isLoading ?
+                  <div className="w-full flex flex-row items-center justify-center">
+                    <Loader></Loader>
+                  </div>
+        :
+          <div className="w-full px-5 py-3 relative">
         <Toaster />
+       
         <div className="flex flex-row items-center justify-between bg-white rounded-sm pr-2 w-sm">
           <input
             type="text"
@@ -74,13 +85,21 @@ export default function Home() {
 
           {
             products.map((product) => {
-              return <div key={product.id} className="bg-white rounded-xl px-5 py-3 xl:w-[450px]  relative">
+              return <div key={product.id} className="bg-white rounded-xl px-5 py-3 xl:w-[450px] relative">
+                     {isModalopen && (
+                    <POPModal onClose={() => setModalOpen(false)} onOk={() => handleProductDeleteion(product.id)}>
+                      <div className="w-full">
+                        <h2 className="text-2xl font-bold text-center">Confirmation</h2>
+                        <p className="text-xl font-medium ">Are you sure you want to permanent delete user from database?</p>
+                      </div>
+                    </POPModal>
+                  )}
                 <div className="absolute right-5 flex flex-col gap-2">
                   <FiEdit onClick={() => navigate("/edit-product", { state: { product } })} className="h-9 w-9 p-1 rounded-sm bg-gray-200 hover:bg-gray-400 " />
-                  <MdDeleteOutline onClick={()=>handleProductDeleteion(product.id)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200 " />
+                  <MdDeleteOutline onClick={()=>setModalOpen(true)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200 " />
                 </div>
 
-                <img className=" w-[250px] bg-gray-300" src={burgerImg} alt="Product Image" loading="lazy" />
+                <img className=" w-[250px] bg-gray-300 m-auto" src={burgerImg} alt="Product Image" loading="lazy" />
                 <h3 className="font-medium">{product.name}</h3>
                 <div className="flex flex-row items-center justify-start gap-2">
                   <FaStar className="text-orange-600" />
@@ -105,6 +124,7 @@ export default function Home() {
         </div>
 
       </div>
+       }
 
     </>
   )

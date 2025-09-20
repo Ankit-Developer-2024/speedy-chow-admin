@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {createUser, deleteUser, fetchAllUser, updateUser} from './userApi'
+import {createUser, deleteMultipleUser, deleteUser, fetchAllUser, updateUser} from './userApi'
 
 export const fetchAllUserAsync = createAsyncThunk(
     'user/fetchAllUser',
@@ -30,6 +30,14 @@ export const  deleteUserAsync = createAsyncThunk(
     'user/deleteUser',
     async(id)=>{
         const data = await deleteUser(id);
+        return data;
+    }
+)
+
+export const  deleteMultipleUserAsync = createAsyncThunk(
+    'user/deleteMultipleUser',
+    async(args)=>{
+        const data = await deleteMultipleUser(args);
         return data;
     }
 )
@@ -81,7 +89,7 @@ export const userSlice = createSlice({
                 state.message=actions.error.message
                 state.success=false; 
         })
-         .addCase(deleteUserAsync.pending,(state)=>{
+        .addCase(deleteUserAsync.pending,(state)=>{
             state.loading=true, 
             state.success=false
         })
@@ -98,7 +106,7 @@ export const userSlice = createSlice({
                 state.message=actions.error.message
                 state.success=false; 
         })
-          .addCase(updateUserAsync.pending,(state)=>{
+        .addCase(updateUserAsync.pending,(state)=>{
             state.loading=true, 
             state.success=false
         })
@@ -112,6 +120,22 @@ export const userSlice = createSlice({
            }
         })
         .addCase(updateUserAsync.rejected,(state,actions)=>{
+                state.loading=false;
+                state.message=actions.error.message
+                state.success=false; 
+        })
+        .addCase(deleteMultipleUserAsync.pending,(state)=>{
+            state.loading=true, 
+            state.success=false
+        })
+        .addCase(deleteMultipleUserAsync.fulfilled,(state,actions)=>{
+            state.loading=false;
+            state.message=actions.payload.message
+            state.success=actions.payload.success;  
+            const deletedUserIds = new Set(actions.payload.data.users.map(user => user.id));
+            state.data=state.data.filter((user)=>!deletedUserIds.has(user.id))
+        })
+        .addCase(deleteMultipleUserAsync.rejected,(state,actions)=>{
                 state.loading=false;
                 state.message=actions.error.message
                 state.success=false; 

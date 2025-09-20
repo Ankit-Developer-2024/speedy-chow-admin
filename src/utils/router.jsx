@@ -1,8 +1,9 @@
 import { CreateProductPage } from '../pages/createProductPage';
 import { CreateUserPage } from '../pages/createUserPage';
-import { EditProductPage } from '../pages/editProductPage';
-import HomePage from '../pages/homePage'
-import UserPage from '../pages/userPage'
+import { EditProductPage } from '../pages/editProductPage'; 
+import { HomePage } from '../pages/homePage'; 
+import { UserPage } from '../pages/userPage'; 
+import { OrderPage } from '../pages/orderPage'; 
 import { createBrowserRouter } from "react-router";
 
 const Router =  createBrowserRouter([
@@ -25,6 +26,10 @@ const Router =  createBrowserRouter([
     {
     path: "/user/create-user",
     element: <CreateUserPage></CreateUserPage>,
+    },
+    {
+    path: "/order",
+    element: <OrderPage></OrderPage>,
     },
   ])
 

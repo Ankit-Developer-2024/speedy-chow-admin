@@ -1,7 +1,7 @@
 import SideBar from "../features/sideBar/sideBar";
 import User from "../features/user/user"
 
-function UserPage() {
+export const UserPage=function UserPage() {
     return (
         <div>
              <SideBar>
@@ -11,4 +11,4 @@ function UserPage() {
     );
 }
 
-export default UserPage
+ 

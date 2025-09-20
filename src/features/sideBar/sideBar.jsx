@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router";
 import { MODERN_ADMIN_PANEL, SPEEDY_CHOW } from "../../app/strings/appStrings";
 import { FaRegUser  } from "react-icons/fa";
 import { IoHomeOutline  } from "react-icons/io5";
+import { BiSolidFoodMenu } from "react-icons/bi";
 import { useEffect } from "react";
 
 export default function SideBar({children}) {
@@ -11,6 +12,7 @@ export default function SideBar({children}) {
     const navigation=[
         {name:"Dashboard" , icon:<IoHomeOutline></IoHomeOutline>,link:'/'},
         {name:"Users" , icon:<FaRegUser></FaRegUser>,link:'/user'}, 
+        {name:"Order" , icon:<BiSolidFoodMenu />,link:'/order'}, 
        ]
 
     return (

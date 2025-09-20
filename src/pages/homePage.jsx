@@ -1,7 +1,7 @@
 import Home from "../features/home/home"
 import SideBar from "../features/sideBar/sideBar";
 
- function HomePage() {
+export const HomePage = function HomePage() {
     return (
         <>
           <SideBar>
@@ -11,5 +11,4 @@ import SideBar from "../features/sideBar/sideBar";
         </>
     )
 }
-
-export default HomePage;
+ 
