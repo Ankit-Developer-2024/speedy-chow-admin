@@ -4,8 +4,8 @@ import { deleteMultipleOrder, deleteOrder, fetchAllOrder, updateOrder } from "./
 
 export const fetchAllOrderAsync = createAsyncThunk(
     'order/fetchAllOrder',
-    async()=>{
-        const data = await fetchAllOrder();
+    async(args)=>{
+        const data = await fetchAllOrder(args);
         return data;
     }
 

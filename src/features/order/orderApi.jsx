@@ -2,9 +2,11 @@ import { axiosInstance } from "../../app/services/network/axiosInstance";
 import { FETCH_ORDERS, ORDER } from "../../app/strings/appUrl";
 
 
-export const fetchAllOrder = async()=>{
+export const fetchAllOrder = async(data)=>{
      try {  
-        const response = await axiosInstance.get(FETCH_ORDERS); 
+        const response = await axiosInstance.get(FETCH_ORDERS,{
+            params:data
+        }); 
         return response.data
      } catch (error) { 
         

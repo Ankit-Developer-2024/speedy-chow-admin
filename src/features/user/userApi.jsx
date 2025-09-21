@@ -1,10 +1,12 @@
 import { axiosInstance } from "../../app/services/network/axiosInstance"; 
-import { CREATE_USER, FETCH_USER, USER } from "../../app/strings/appUrl";
+import { CREATE_USER, FETCH_USER, SEARCH_USER, USER } from "../../app/strings/appUrl";
 
 
-export const fetchAllUser = async()=>{
+export const fetchAllUser = async(data)=>{
      try {
-        const response = await axiosInstance.get(FETCH_USER);
+        const response = await axiosInstance.get(FETCH_USER,{
+            params:data
+        });
         return response.data
      } catch (error) {
         return error.response.data;
@@ -44,6 +46,17 @@ export const deleteUser = async (id) => {
 export const deleteMultipleUser = async (data) => {
     try {
         const response = await axiosInstance.delete(USER,{data})
+        return response.data
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+export const searchUser= async(data)=>{
+     try {
+        const response = await axiosInstance.get(SEARCH_USER,{
+            params:data
+        })
         return response.data
     } catch (error) {
         return error.response.data;

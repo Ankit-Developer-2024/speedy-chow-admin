@@ -1,16 +1,17 @@
 import { CiSearch } from "react-icons/ci";
-import { ADD_PRODUCT, ADD_USER, USERS } from "../../app/strings/appStrings";
+import { ADD_PRODUCT, ADD_USER, CONFIRMATION, RESET_FILTER, USERS } from "../../app/strings/appStrings";
 import burgerImg from "../../assets/burger.jpeg"
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { data, deleteMultipleUserAsync, deleteUserAsync, fetchAllUserAsync, loading, updateUserAsync } from "./userSlice";
+import { data, deleteMultipleUserAsync, deleteUserAsync, fetchAllUserAsync, loading, searchData, searchUserAsync, updateUserAsync } from "./userSlice";
 import { getCaptilizeFirstLatter, getFormatedDate } from "../../utils/utility";
 import { useNavigate } from "react-router";
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from "../../app/components/loader"
 import { POPModal } from "../../app/components/popModel";
+import { PageHeading } from "../../app/components/pageHeading";
 
 export default function User() {
 
@@ -19,10 +20,80 @@ export default function User() {
 
   const isLoading = useSelector(loading)
   const users = useSelector(data);
+  let searchedUser = useSelector(searchData)
   const [showEditUIById, setShowEditUIById] = useState("");
   const [userIds, setUserIds] = useState([])
   const [isModalopen, setModalOpen] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null)
+  const [searchResultUi, setSearchResultUi] = useState(false)
+  let selectedSearchName = useRef("");
+  let selectedSearchRole = useRef("");
+  let selectedSearchStatus = useRef("");
+
+  function handleResetFilter() {
+    selectedSearchName.current = ""
+    selectedSearchRole.current = ""
+    selectedSearchStatus.current = ""
+    dispatch(fetchAllUserAsync())
+  }
+
+
+  function handleUserRoleSearch(e) {
+    console.log(e.target.value.length);
+
+    selectedSearchRole.current = e.target.value
+    console.log(selectedSearchRole);
+    let data = {};
+    if (selectedSearchRole.current.length > 0) { data.role = selectedSearchRole.current }
+
+    if (selectedSearchStatus.current.length > 0) data.status = selectedSearchStatus.current
+
+    if (selectedSearchName.current.length > 0) data.name = selectedSearchName.current
+
+    dispatch(fetchAllUserAsync(data))
+
+  }
+
+  function handleUserStatusSearch(e) {
+    selectedSearchStatus.current = e.target.value
+    let data = {};
+    if (selectedSearchRole.current.length > 0) data.role = selectedSearchRole.current
+
+    if (selectedSearchStatus.current.length > 0) data.status = selectedSearchStatus.current
+
+    if (selectedSearchName.current.length > 0) data.name = selectedSearchName.current
+
+    dispatch(fetchAllUserAsync(data))
+  }
+
+
+  function handleUserSearch(e) {
+    !searchResultUi && setSearchResultUi(true)
+    if (e.target.value) {
+      const data = { qName: e.target.value }
+      dispatch(searchUserAsync(data))
+    }
+    selectedSearchName.current = e.target.value
+
+    if (e.target.value.length == 0) {
+      setSearchResultUi(false)
+      dispatch(fetchAllUserAsync())
+    }
+  }
+
+  function handleSearchSelection(uName) {
+    selectedSearchName.current = uName
+    let data = { qName: uName }
+    searchedUser = []
+    dispatch(fetchAllUserAsync(data)).unwrap().then((val) => {
+      if (val.success) {
+        (() => toast.success(val.message))();
+      } else {
+        val.message ?
+          (() => toast.error(val.message))() : (() => toast.error("User not fetched"))();
+      }
+    })
+  }
 
 
   function handleSetShowEditUIById(id) {
@@ -49,9 +120,9 @@ export default function User() {
   }
 
   function handleConfirmationBoxOkay() {
-    if(deleteUserId){
+    if (deleteUserId) {
       handleUserDeleteion(deleteUserId)
-    }else{
+    } else {
       handleDeleteMultipleUser()
     }
   }
@@ -123,49 +194,74 @@ export default function User() {
 
   }, [dispatch])
 
-
   return (
     <>
-      {isLoading ?
-        <div className="w-full flex flex-row items-center justify-center">
-          <Loader></Loader>
-        </div>
-        :
-        <div className="px-5 py-3 w-full ">
-          <Toaster />
-          {isModalopen && (
-            <POPModal onClose={() => setModalOpen(false)} onOk={() => handleConfirmationBoxOkay()}>
-              <div className="w-full">
-                <h2 className="text-2xl font-bold text-center">Confirmation</h2>
-                <p className="text-xl font-medium ">Are you sure you want to permanent delete user from database?</p>
-              </div>
-            </POPModal>
-          )}
-          <h1 className="text-3xl font-bold">{USERS}</h1>
-          <p className="text-sm text-gray-400">Hi, Ankit. Welcome back to Sppedy Chow Admin panel</p>
-          <br />
 
-          <div className="w-full flex flex-row items-center justify-between">
+      <div onClick={() => setSearchResultUi(false)} className="px-5 py-3 w-full  ">
+        <Toaster />
+
+        <PageHeading pageName={USERS}></PageHeading>
+        <br />
+
+        <div className="w-full flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-start gap-2">
             <div className="flex flex-row items-center justify-between bg-white rounded-sm pr-2 w-sm">
               <input
                 type="text"
-                className="bg-white rounded-sm  outline-0 px-2 py-1"
+                value={selectedSearchName.current ?? ""}
+                onChange={(e) => handleUserSearch(e)}
+                className="bg-white rounded-sm w-full  outline-0 px-2 py-1"
                 placeholder="Search..."
               />
               <CiSearch className="" />
             </div>
+            <select name="role" value={selectedSearchRole.current} onChange={(e) => handleUserRoleSearch(e)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2">
+              <option value="">Role</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+            <select name="status" value={selectedSearchStatus.current} onChange={(e) => handleUserStatusSearch(e)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2">
+              <option value="">Status</option>
+              <option value="Active">Active</option>
+              <option value="Block">Block</option>
+            </select>
+
+          </div>
+
+          <div className="flex flex-row items-center justify-center gap-2">
+            <button
+              onClick={handleResetFilter}
+              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
+            >{RESET_FILTER}</button>
             <button
               onClick={() => navigate('/user/create-user')}
               className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
             >{ADD_USER}</button>
           </div>
+        </div>
+        {searchResultUi && searchedUser !== 0 && <ol className="bg-white w-sm absolute z-1 ">
+          {
+            searchedUser.map((user, index) => <li key={index} onClick={() => handleSearchSelection(user.name)} className="w-full px-2 pb-0.5 rounded-sm hover:bg-amber-500 font-medium text-md">{user.name}</li>)
+          }
+        </ol>}
 
-          <br />
+        <br />
 
-          {/* items */}
-
+        {/* items */}
+        {isLoading ?
+          <div className="w-full flex flex-row items-center justify-center">
+            <Loader></Loader>
+          </div>
+          :
           <div className="w-full">
-
+            {isModalopen && (
+              <POPModal onClose={() => setModalOpen(false)} onOk={() => handleConfirmationBoxOkay()} bgColor={"bg-[#00000090]"}>
+                <div className="w-full">
+                  <h2 className="text-2xl font-bold text-center">{CONFIRMATION}</h2>
+                  <p className="text-xl font-medium ">Are you sure you want to permanent delete user from database?</p>
+                </div>
+              </POPModal>
+            )}
             <table className="table-fixed border-collapse  w-full">
               <thead className="bg-slate-600 text-white">
                 <tr className=" place-content-start  items-start">
@@ -234,10 +330,9 @@ export default function User() {
 
           </div>
 
+        }
+      </div>
 
-
-        </div>
-      }
     </>
   );
 }
