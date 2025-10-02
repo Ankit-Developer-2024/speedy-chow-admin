@@ -1,6 +1,5 @@
 import { CiSearch } from "react-icons/ci";
 import { CONFIRMATION, ORDER, RESET_FILTER } from "../../app/strings/appStrings";
-import burgerImg from "../../assets/burger.jpeg"
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";

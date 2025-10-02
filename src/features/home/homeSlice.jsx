@@ -79,7 +79,12 @@ export const homeSlice = createSlice({
         state.loading=false; 
         state.message=actions.payload.message 
         state.success=actions.payload.success; 
-        state.data= actions.payload.data  
+        if(actions.payload.success){
+         state.data= actions.payload.data 
+        }else{
+            state.data= []
+        }
+         
     })
     .addCase(fetchProductAsync.rejected,(state,actions)=>{
         state.loading=false;

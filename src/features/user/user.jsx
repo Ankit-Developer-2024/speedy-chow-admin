@@ -112,8 +112,8 @@ export default function User() {
   }
 
   function handleConfirmationBox(id) {
-    setModalOpen(true)
     if (id !== -1) {
+      setModalOpen(true)
       setDeleteUserId(id)
     }
 
@@ -285,7 +285,7 @@ export default function User() {
                         <input onChange={() => handleMultipleUserIds(user.id)} checked={userIds.includes(user.id)} type="checkbox" />
                       </td>
                       <td className="flex  gap-2 py-2">
-                        <img className="w-6 h-6 rounded-full" src={burgerImg} alt="img" />
+                        { user.image ? <img className="w-6 h-6 rounded-full" src={user.image} alt="img" loading="lazy" /> : <p className="w-6 h-6 rounded-full bg-orange-400 text-white text-center">{getCaptilizeFirstLatter(user.name).substring(0,1)}</p> }
                         <p className="text-md font-medium">{getCaptilizeFirstLatter(user.name)}</p>
                       </td>
                       <td >

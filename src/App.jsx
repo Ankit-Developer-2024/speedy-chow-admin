@@ -1,17 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-import { RouterProvider } from 'react-router'
+import { RouterProvider, } from 'react-router'
 import Router from './utils/router'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkAsync, userLogedIn, userChecked } from './features/auth/authSlice'
  
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const dispatch = useDispatch() 
 
-
+  useEffect(()=>{ 
+     if(window.location.pathname!=='/signup' || window.location.pathname!=='/login'){
+       dispatch(checkAsync())
+     }
+  },[dispatch]) 
+ 
   return (
-    <> 
-      <RouterProvider router={Router}>
+    <>  
+       <RouterProvider router={Router}>
         
        </RouterProvider>
      

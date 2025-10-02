@@ -144,8 +144,8 @@ export const userSlice = createSlice({
             .addCase(deleteMultipleUserAsync.fulfilled, (state, actions) => {
                 state.loading = false;
                 state.message = actions.payload.message
-                state.success = actions.payload.success;
-                const deletedUserIds = new Set(actions.payload.data.users.map(user => user.id));
+                state.success = actions.payload.success; 
+                const deletedUserIds = new Set(actions.payload.data.map(user => user.id));
                 state.data = state.data.filter((user) => !deletedUserIds.has(user.id))
             })
             .addCase(deleteMultipleUserAsync.rejected, (state, actions) => {

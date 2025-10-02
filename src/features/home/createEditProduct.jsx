@@ -31,30 +31,11 @@ export const CreateEditProduct = () => {
 
 
     function handleImage(e) {
-        const image = watch('image');
+        const image = watch('image'); 
         if (image[0]) {
             const imagePreview = image ? URL.createObjectURL(image[0]) : null;
             setPreview(imagePreview)
-        } else {
-            if (location.pathname == "/edit-product") {
-                const { product } = location.state || {}
-                const buffer = new Uint8Array(product.image.data);
-                // Convert to File 
-                let type = product.imageType.split('/')[1]
-                const file = new File(
-                    [buffer],               // data
-                    `download.${type}`,        // file name
-                    { type: product.imageType, lastModified: Date.now() }
-                );
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                if (fileImageRef.current) {
-                    fileImageRef.current.files = dataTransfer.files;
-                }
-            }
         }
-
-
     }
 
     function onSubmit(data) {
@@ -65,7 +46,6 @@ export const CreateEditProduct = () => {
             totalQuantity: data.totalQuantity,
             category: data.category
         }
-
         if (data.discountPercentage !== "") {
             productDetails['discountPercentage'] = data.discountPercentage
         }
@@ -78,9 +58,11 @@ export const CreateEditProduct = () => {
 
         const formData = new FormData();
         formData.append("productDetails", JSON.stringify(productDetails))
-        formData.append('image', fileImageRef.current.files[0]);
+        if(fileImageRef.current.files[0]){ 
+            formData.append('image', fileImageRef.current.files[0]);
+        }
 
-        if (pageTitle === ADD_PRODUCT) {
+        if (pageTitle === ADD_PRODUCT) { 
             dispatch(createProductAsync(formData)).unwrap().then((val) => {
                 if (val.success) {
                     (() => toast.success(val.message))();
@@ -108,7 +90,6 @@ export const CreateEditProduct = () => {
 
         if (location.pathname == "/edit-product") {
             setPageTitle(EDIT_PRODUCT)
-
             const { product } = location.state || {}
             setValue('name', product.name)
             setValue('description', product.description)
@@ -118,30 +99,27 @@ export const CreateEditProduct = () => {
             setValue('rating', product.rating)
             setValue('category', product.category)
             setValue('deleted', product.deleted)
+            setPreview(product.image);
 
-            let imgurl = getImageUrlFromBuffer(product.image.data,product.imageType) 
-
-            setPreview(imgurl);
-
-            if (location.pathname == "/edit-product") {
-                const { product } = location.state || {}
-                const buffer = new Uint8Array(product.image.data);
-                // Convert to File 
-                let type = product.imageType.split('/')[1]
-                const file = new File(
-                    [buffer],               // data
-                    `download.${type}`,        // file name
-                    { type: product.imageType, lastModified: Date.now() }
-                );
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                if (fileImageRef.current) {
-                    fileImageRef.current.files = dataTransfer.files;
-                }
-            }
+            // if (location.pathname == "/edit-product") {
+            //     const { product } = location.state || {}
+            //     const buffer = new Uint8Array(product.image.data);
+            //     // Convert to File 
+            //     let type = product.imageType.split('/')[1]
+            //     const file = new File(
+            //         [buffer],               // data
+            //         `download.${type}`,        // file name
+            //         { type: product.imageType, lastModified: Date.now() }
+            //     );
+            //     const dataTransfer = new DataTransfer();
+            //     dataTransfer.items.add(file);
+            //     if (fileImageRef.current) {
+            //         fileImageRef.current.files = dataTransfer.files;
+            //     }
+            // }
         }
 
-    }, [dispatch, fileImageRef])
+    }, [dispatch])
 
 
     return (
@@ -233,24 +211,25 @@ export const CreateEditProduct = () => {
                                 <label className="text-sm font-medium block">Choose image to upload (PNG, JPG)</label>
                                 {/* <img src={preview} alt="" /> */}
                                 <div className=" border border-gray-400 border-dashed rounded-md bg-gray-50 relative">
-                                    {preview ? <img className="absolute top-0 rounded-sm w-full h-full" src={preview} alt="product image" /> : <div className="text-sm font-medium absolute top-[50%] left-[35%] ">
+                                    {preview ? <img className="absolute top-0 rounded-sm w-full h-full" src={preview} alt="product image" /> 
+                                    : <div className="text-sm font-medium absolute top-[50%] left-[35%] ">
                                         <p>Selecte image</p>
                                     </div>}
                                     <input
-
                                         className="w-full h-[200px] opacity-0"
                                         type="file"
                                         {...register("image", {
                                             onChange: (e) => handleImage(e),
-                                            required: "Image is required",
-                                            validate: {
+                                            required:pageTitle===EDIT_PRODUCT ? false : "Image is required.",
+                                            validate:pageTitle===EDIT_PRODUCT?{} : {
                                                 acceptedFormats: (files) => {
-                                                    if (fileImageRef != null) {
-                                                        return ['image/jpeg', 'image/png', 'image/jpg'].includes(fileImageRef.current.files[0]?.type) || "Only JPEG, PNG, JPG are allowed."
-                                                    } else if (files) {
-                                                        return files && files.length > 0 && ['image/jpeg', 'image/png', 'image/jpg'].includes(files[0]?.type) || "Only JPEG, PNG, JPG are allowed."
+                                                      return files && files.length > 0 && ['image/jpeg', 'image/png', 'image/jpg'].includes(files[0]?.type) || "Only JPEG, PNG, JPG are allowed."
+                                                    // if (fileImageRef != null) {
+                                                    //     return ['image/jpeg', 'image/png', 'image/jpg'].includes(fileImageRef.current.files[0]?.type) || "Only JPEG, PNG, JPG are allowed."
+                                                    // } else if (files) {
+                                                    //     return files && files.length > 0 && ['image/jpeg', 'image/png', 'image/jpg'].includes(files[0]?.type) || "Only JPEG, PNG, JPG are allowed."
 
-                                                    }
+                                                    // }
 
                                                 }
                                             },
@@ -260,9 +239,7 @@ export const CreateEditProduct = () => {
                                             register("image").ref(element);
                                             fileImageRef.current = element;
                                         }}
-
                                     />
-
                                 </div>
                                 {errors.image?.message && <p className="text-md text-red-500">{errors.image.message}</p>}
                             </div>

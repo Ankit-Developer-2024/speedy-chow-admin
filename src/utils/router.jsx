@@ -5,31 +5,42 @@ import { HomePage } from '../pages/homePage';
 import { UserPage } from '../pages/userPage'; 
 import { OrderPage } from '../pages/orderPage'; 
 import { createBrowserRouter } from "react-router";
+import { SignUpPage } from '../pages/signpPage';
+import { LogInPage } from '../pages/logInPage';
+import { ProtectedRoute } from '../pages/protectedRoute';
 
 const Router =  createBrowserRouter([
     {
+    path: "/signup",
+    element: <SignUpPage></SignUpPage>,
+    },
+    {
+    path: "/login",
+    element: <LogInPage></LogInPage>,
+    },
+    {
     path: "/",
-    element: <HomePage></HomePage>,
+    element: <ProtectedRoute><HomePage></HomePage></ProtectedRoute>,
     },
     {
     path: "/create-product",
-    element: <CreateProductPage></CreateProductPage>,
+    element: <ProtectedRoute><CreateProductPage></CreateProductPage></ProtectedRoute>,
     },
     {
     path: "/edit-product",
-    element: <EditProductPage></EditProductPage>,
+    element: <ProtectedRoute><EditProductPage></EditProductPage></ProtectedRoute>,
     },
     {
     path: "/user",
-    element: <UserPage></UserPage>,
+    element: <ProtectedRoute><UserPage></UserPage></ProtectedRoute>,
     },
     {
     path: "/user/create-user",
-    element: <CreateUserPage></CreateUserPage>,
+    element: <ProtectedRoute><CreateUserPage></CreateUserPage></ProtectedRoute>,
     },
     {
     path: "/order",
-    element: <OrderPage></OrderPage>,
+    element: <ProtectedRoute><OrderPage></OrderPage></ProtectedRoute>,
     },
   ])
 

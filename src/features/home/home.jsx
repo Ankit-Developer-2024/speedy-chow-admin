@@ -26,6 +26,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState([])
   const [searchResultUi, setSearchResultUi] = useState(false)
   const selectedSearchName = useRef("");
+  const [deleteProductId,setDeleteProductId] =useState(-1) 
 
   function handleResetFilter() {
     selectedSearchName.current=""
@@ -55,15 +56,23 @@ export default function Home() {
   }
 
 
-  function handleProductDeleteion(id) {
-    setModalOpen(false)
-    dispatch(deleteProductAsync(id)).unwrap().then((val) => {
+  function handleProductDeleteion() {
+    setModalOpen(false) 
+    dispatch(deleteProductAsync(deleteProductId)).unwrap().then((val) => {
       if (val.success) {
         (() => toast.success(val.message))();
       } else {
         (() => toast.error(val.message))();
       }
     })
+  }
+
+
+  function handleDeletePop(id) {
+     if(id!==-1){
+     setModalOpen(true)
+     setDeleteProductId(id)
+     }
   }
 
   function handleCategorySelection(category) {
@@ -95,7 +104,6 @@ export default function Home() {
       }
     })
     setSelectedCategory((selectedCategory) => finalCategory)
-
 
   }
 
@@ -190,22 +198,23 @@ export default function Home() {
               {/* item */}
 
               {products.length === 0 && isLoading === false ? <p className="text-xl font-bold text-center m-auto">No products found.</p> :
-                products.map((product) => {
+                products.map((product,index) => {
                   return <div key={product.id} className="bg-white rounded-xl px-5 py-3 w-[328px] relative">
+                     
                     {isModalopen && (
-                      <POPModal onClose={() => setModalOpen(false)} onOk={() => handleProductDeleteion(product.id)}>
+                      <POPModal onClose={() => setModalOpen(false)} onOk={() => handleProductDeleteion()}>
                         <div className="w-full">
                           <h2 className="text-2xl font-bold text-center">{CONFIRMATION}</h2>
-                          <p className="text-xl font-medium ">Are you sure you want to permanent delete product from database?</p>
+                          <p className="text-xl font-medium ">Are you sure you want to permanent delete product({deleteProductId}) from database?</p>
                         </div>
                       </POPModal>
                     )}
                     <div className="absolute right-5 flex flex-col gap-2">
                       <FiEdit onClick={() => navigate("/edit-product", { state: { product } })} className="h-9 w-9 p-1 rounded-sm bg-gray-200 hover:bg-gray-400 " />
-                      <MdDeleteOutline onClick={() => setModalOpen(true)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200 " />
+                      <MdDeleteOutline onClick={() => handleDeletePop(product.id)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200 " />
                     </div>
 
-                    <img className="w-full h-[250px] object-cover rounded-xl bg-gray-300 m-auto" src={getImageUrlFromBuffer(product.image.data, product.imageType)} alt="Product Image" loading="lazy" />
+                    <img className="w-full h-[250px] object-cover rounded-xl bg-gray-300 m-auto" src={product.image} alt="Product Image" loading="lazy" />
                     <h3 className="font-medium">{product.name}</h3>
                     <div className="flex flex-row items-center justify-start gap-2">
                       <FaStar className="text-orange-600" />
