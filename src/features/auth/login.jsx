@@ -1,6 +1,6 @@
 import { LOGIN, SIGN_UP } from "../../app/strings/appStrings";
 import burgerImg from "../../assets/burger.jpeg";
-import pastryImg from "../../assets/pastry.jpg"
+import pastryImg from "../../assets/pastry.jpg" 
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router";
 import { loading, logInAsync } from "./authSlice";
@@ -44,7 +44,9 @@ export const LogIn = function () {
                     <div className="flex flex-row items-center justify-start relative">
                          <img className="rounded-[100%]  object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
                         <img className="rounded-[100%] absolute left-15  object-cover w-[200px] h-[200px] mt-7" src={pastryImg} alt="images" />
-
+                        <img className="rounded-[100%]   object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
+                       <img className="rounded-[100%] absolute left-85  object-cover w-[200px] h-[200px] mt-7" src={pastryImg} alt="images" />
+                       
                        
                     </div>
                 </div>

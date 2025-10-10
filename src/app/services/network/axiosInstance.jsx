@@ -39,15 +39,15 @@ axiosInstance.interceptors.response.use(function (response) {
     
     const originalReq=error.config  
     
-    if(error.response?.status===401 && !originalReq._retry && isRefresh && originalReq.url!=='auth/login' ){
+    if(error.response?.status===401 && !originalReq._retry && isRefresh && originalReq.url!=='auth/login' && originalReq.url!=='auth/signup' ){
       try { 
-        console.log("--interceptors error",error);
+      //  console.log("--interceptors error",error);
       
        isRefresh=false
        await axiosInstance.get('auth/refresh-token') 
        return axiosInstance(originalReq)
       } catch (error) {  
-        console.log("--interceptors catch error",error); 
+       // console.log("--interceptors catch error",error); 
         //window.location.href='/login'
       }
     }

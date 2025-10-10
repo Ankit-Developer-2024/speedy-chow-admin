@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { LOGIN, SIGN_UP } from "../../app/strings/appStrings";
 import burgerImg from "../../assets/burger.jpeg"
+import pastryImg from "../../assets/pastry.jpg" 
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router";
 import { loading, signUpAsync } from "./authSlice";
@@ -41,7 +42,12 @@ export const SignUp = function () {
                     <h1 className="text-3xl font-extrabold text-orange-500">Speedu Chow</h1>
                     <p className="text-md font-medium text-gray-500">Modern admin help</p>
                     <p className="text-md font-light text-gray-600">Managing products, users, and order statuses, alongside an efficient fuzzy search, can be improved by focusing on robust data structures, clear API design, and optimized search algorithms.</p>
-                    <img className="rounded-[100%] object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
+                     <div className="flex flex-row items-center justify-start relative">
+                                             <img className="rounded-[100%]  object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
+                                            <img className="rounded-[100%] absolute left-15  object-cover w-[200px] h-[200px] mt-7" src={pastryImg} alt="images" />
+                                            <img className="rounded-[100%]   object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
+                                           <img className="rounded-[100%] absolute left-85  object-cover w-[200px] h-[200px] mt-7" src={pastryImg} alt="images" />
+                      </div>
                 </div>
                 <div className="bg-white h-[490px] p-5 w-full rounded-xl flex flex-col items-center justify-center ">
                     <h1 className="text-3xl font-bold mb-2">{SIGN_UP}</h1>

@@ -19,7 +19,7 @@ export const CreateUser = () => {
 
  
 
-    function onSubmit(data) { 
+    function onSubmit(data) {  
         dispatch(createUserAsync(data)).unwrap().then((val) => {
       if (val.success) {
         (() => toast.success(val.message))();
@@ -83,6 +83,16 @@ export const CreateUser = () => {
                             })}
                             />
                             {errors.password?.message && <p className="text-md text-red-500">{errors.password.message}</p>}
+                             
+                             
+                                <label className="text-xl font-medium block">Role</label>
+                                <select  {...register("role",{required:"Role is required"})} className="border rounded-sm p-1 bg-gray-100 g w-full focus:border-orange-400 "  >
+                                    <option value="">Role</option>
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                                {errors.role?.message && <p className="text-md text-red-500">{errors.role.message}</p>}
+                       
 
                            
                             <input className="bg-orange-400 mt-2 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500" type="submit" value="Create" />

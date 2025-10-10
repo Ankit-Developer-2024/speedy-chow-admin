@@ -9,6 +9,7 @@ import { SignUpPage } from '../pages/signpPage';
 import { LogInPage } from '../pages/logInPage';
 import { ProtectedRoute } from '../pages/protectedRoute'; 
 import { CategoryPage } from '../pages/categoryPage';
+import { NotFound404Page } from '../pages/notFound404Page';
 
 const Router =  createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const Router =  createBrowserRouter([
     {
     path: "/order",
     element: <ProtectedRoute><OrderPage></OrderPage></ProtectedRoute>,
+    },
+    {
+    path: "*",
+    element:<NotFound404Page></NotFound404Page>,
     },
   ])
 
