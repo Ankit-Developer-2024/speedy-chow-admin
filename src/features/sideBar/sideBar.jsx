@@ -18,6 +18,7 @@ export default function SideBar({ children }) {
 
   const navigation = [
     { name: "Dashboard", icon: <IoHomeOutline></IoHomeOutline>, link: '/' },
+    { name: "Category", icon: <IoHomeOutline></IoHomeOutline>, link: '/category' },
     { name: "Users", icon: <FaRegUser></FaRegUser>, link: '/user' },
     { name: "Order", icon: <BiSolidFoodMenu />, link: '/order' },
   ]

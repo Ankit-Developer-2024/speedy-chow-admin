@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { category, createProductAsync, message, fetchCategoryAsync, loading, updateProductAsync } from "./homeSlice";
 import { Loader } from "../../app/components/loader"
 import { useLocation } from "react-router";
-import toast, { Toaster } from 'react-hot-toast';
-import { getImageUrlFromBuffer } from "../../utils/utility";
+import toast, { Toaster } from 'react-hot-toast'; 
 
 
 export const CreateEditProduct = () => {
@@ -213,7 +212,7 @@ export const CreateEditProduct = () => {
                                 <div className=" border border-gray-400 border-dashed rounded-md bg-gray-50 relative">
                                     {preview ? <img className="absolute top-0 rounded-sm w-full h-full" src={preview} alt="product image" /> 
                                     : <div className="text-sm font-medium absolute top-[50%] left-[35%] ">
-                                        <p>Selecte image</p>
+                                        <p>Select image</p>
                                     </div>}
                                     <input
                                         className="w-full h-[200px] opacity-0"
@@ -238,7 +237,7 @@ export const CreateEditProduct = () => {
                                             // connect RHF's ref + your own ref
                                             register("image").ref(element);
                                             fileImageRef.current = element;
-                                        }}
+                                    }}
                                     />
                                 </div>
                                 {errors.image?.message && <p className="text-md text-red-500">{errors.image.message}</p>}

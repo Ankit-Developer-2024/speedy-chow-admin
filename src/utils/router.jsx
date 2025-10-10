@@ -7,7 +7,8 @@ import { OrderPage } from '../pages/orderPage';
 import { createBrowserRouter } from "react-router";
 import { SignUpPage } from '../pages/signpPage';
 import { LogInPage } from '../pages/logInPage';
-import { ProtectedRoute } from '../pages/protectedRoute';
+import { ProtectedRoute } from '../pages/protectedRoute'; 
+import { CategoryPage } from '../pages/categoryPage';
 
 const Router =  createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const Router =  createBrowserRouter([
     {
     path: "/",
     element: <ProtectedRoute><HomePage></HomePage></ProtectedRoute>,
+    },
+    {
+      path:"/category",
+      element: <ProtectedRoute><CategoryPage></CategoryPage></ProtectedRoute>,
     },
     {
     path: "/create-product",

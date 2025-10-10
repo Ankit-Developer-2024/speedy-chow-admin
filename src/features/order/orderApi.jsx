@@ -34,7 +34,7 @@ export const deleteOrder = async (id) => {
 }
 
 export const deleteMultipleOrder = async (data) => {
-    try {
+    try { 
         const response = await axiosInstance.delete(ORDER,{data})
         return response.data
     } catch (error) {

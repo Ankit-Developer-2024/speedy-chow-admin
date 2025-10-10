@@ -81,6 +81,7 @@ export default function Order() {
     } else {
       setOrderIds(orderIds => orderIds.filter((userId) => userId !== id))
     }
+    
   }
 
   function handleConfirmationBox(id) {
@@ -101,7 +102,7 @@ export default function Order() {
 
   function handleDeleteMultipleOrder() {
     setModalOpen(false)
-    setDeleteUserId(null)
+    setDeleteOrderId(null)
     if (orderIds) {
       const data = { orderIds }
       dispatch(deleteMultipleOrderAsync(data)).unwrap().then((val) => {
@@ -225,7 +226,7 @@ export default function Order() {
               <POPModal onClose={() => setModalOpen(false)} onOk={() => handleConfirmationBoxOkay()} bgColor={"bg-[#00000090]"}>
                 <div className="w-full">
                   <h2 className="text-2xl font-bold text-center">{CONFIRMATION}</h2>
-                  <p className="text-xl font-medium ">Are you sure you want to permanent delete user from database?</p>
+                  <p className="text-xl font-medium ">Are you sure you want to permanent delete orders from database?</p>
                 </div>
               </POPModal>
             )}
@@ -272,8 +273,12 @@ export default function Order() {
                         <p className="text-md font-medium">#{order.user.substring(0, 5)}...</p>
                         <p className="invisible bg-white z-1 rounded-md p-1 font-medium absolute group-hover:visible ">{order.user}</p>
                       </td>
-                      <td>
-                        <p className="text-md font-medium">{order.paymentMethod}</p>
+                      <td className="text-center">
+                        <div className=" flex flex-row justify-start items-center gap-3">
+                          <p className="text-md font-medium">{order.paymentMethod}</p>
+                          <div className={order.paymentStatus==='success' ? "h-2 w-2 rounded-full bg-green-500" :"h-2 w-2 rounded-full bg-red-500"}></div>
+                        </div>
+
                       </td>
                       <td>
                         <p className="text-md font-medium">{order.totalItems} Items</p>
@@ -291,7 +296,7 @@ export default function Order() {
                             <option value="Delivered">Delivered</option>
                             <option value="Cancelled">Cancelled</option>
                           </select>
-                          : <p className="bg-green-500 text-white rounded-3xl px-2 py-0.5 text-sm font-medium truncate">{order.status}</p>
+                          : <p className={order.status !=="Cancelled"? "bg-green-500 text-white rounded-3xl px-2 py-0.5 text-sm font-medium truncate" : "bg-red-500 text-white rounded-3xl px-2 py-0.5 text-sm font-medium truncate"}>{order.status}</p>
                         }
                       </td>
                       <td  >

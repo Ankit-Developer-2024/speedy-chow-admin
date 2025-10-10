@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import './App.css'
 import { RouterProvider, } from 'react-router'
 import Router from './utils/router'
-import { useDispatch, useSelector } from 'react-redux'
-import { checkAsync, userLogedIn, userChecked } from './features/auth/authSlice'
+import { useDispatch } from 'react-redux'
+import { checkAsync, } from './features/auth/authSlice'
  
 
 

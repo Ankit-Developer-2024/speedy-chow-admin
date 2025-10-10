@@ -4,9 +4,11 @@ import userReducer from '../../features/user/userSlice'
 import orderReducer from '../../features/order/orderSlice'
 import AuthReducer from '../../features/auth/authSlice'
 import sideBarReducer from '../../features/sideBar/sideBarSlice'
+import categoryReducer from '../../features/category/categorySlice'
 export default configureStore({
   reducer: {
     home:homeReducer,
+    category:categoryReducer,
     user:userReducer,
     order:orderReducer,
     auth:AuthReducer,
