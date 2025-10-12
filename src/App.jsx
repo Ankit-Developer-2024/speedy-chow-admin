@@ -15,8 +15,7 @@ function App() {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 1000);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  console.log(isSmallScreen);
+  }, []); 
   
   useEffect(()=>{ 
      if(window.location.pathname!=='/signup' || window.location.pathname!=='/login'){
