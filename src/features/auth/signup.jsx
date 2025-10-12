@@ -95,7 +95,7 @@ export const SignUp = function () {
                             <p className="text-md ">Accept <Link to='/' className="underline font-medium hover:text-orange-500">Terms of use</Link> and <Link to='#' className="underline font-medium hover:text-orange-500">Privacy Policy </Link> </p>
                         </div>
                         {errors.privacyPolicy?.message && <p className="text-sm text-red-500">{errors.privacyPolicy.message}</p>}
-                        <input className="bg-orange-400 mt-2 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500" type="submit" value={SIGN_UP} />
+                        <input className="bg-orange-400 mt-2 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer" type="submit" value={SIGN_UP} />
                         <p className="text-md  ml-3">Already have an ccount? <Link to='/login' className="underline font-medium hover:text-orange-500">{LOGIN} </Link> </p>
 
                     </form>

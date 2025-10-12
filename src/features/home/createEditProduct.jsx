@@ -196,8 +196,8 @@ export const CreateEditProduct = () => {
                             />
                             {errors.rating?.message && <p className="text-md text-red-500">{errors.rating.message}</p>}
 
-                            <input className="bg-orange-400 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500" type="submit" value={pageTitle === ADD_PRODUCT ? "Create" : "Edit"} />
-                            <button className="bg-yellow-400 py-2 px-5 rounded-md font-medium text-white hover:bg-yellow-500 ml-3" onClick={()=>reset()}  >Reset</button>
+                            <input className="bg-orange-400 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer" type="submit" value={pageTitle === ADD_PRODUCT ? "Create" : "Edit"} />
+                            <button className="bg-yellow-400 py-2 px-5 rounded-md font-medium text-white hover:bg-yellow-500 ml-3 cursor-pointer" onClick={()=>reset()}  >Reset</button>
 
                         </form>
 
@@ -215,7 +215,7 @@ export const CreateEditProduct = () => {
                                         <p>Select image</p>
                                     </div>}
                                     <input
-                                        className="w-full h-[200px] opacity-0"
+                                        className="w-full h-[200px] opacity-0 cursor-pointer"
                                         type="file"
                                         {...register("image", {
                                             onChange: (e) => handleImage(e),
@@ -248,7 +248,7 @@ export const CreateEditProduct = () => {
                             <div>
                                 <h2 className="text-xl font-medium">Category</h2>
                                 <label className="text-sm font-medium block">Product Category</label>
-                                <select  {...register("category", { required: "Category is required." })} className="border rounded-sm p-1 bg-gray-100 g w-full focus:border-orange-400 "  >
+                                <select  {...register("category", { required: "Category is required." })} className="border rounded-sm p-1 bg-gray-100 g w-full focus:border-orange-400 cursor-pointer"  >
                                     <option value="">Select category</option>
                                     {
                                         categories.map((category) => {
@@ -263,7 +263,7 @@ export const CreateEditProduct = () => {
                             <div>
                                 <h2 className="text-xl font-medium">Delete</h2>
                                 <label className="text-sm font-medium block">Product Delete</label>
-                                <select {...register("deleted")} className="border rounded-sm p-1 bg-gray-100 g w-full focus:border-orange-400 "  >
+                                <select {...register("deleted")} className="border rounded-sm p-1 bg-gray-100 g w-full focus:border-orange-400 cursor-pointer"  >
                                     <option value="">Delete ?</option>
                                     <option value="true">True</option>
                                     <option value="false">False</option>

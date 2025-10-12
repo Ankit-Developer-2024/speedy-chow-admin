@@ -190,12 +190,12 @@ export default function Order() {
               />
               <CiSearch className="" />
             </div>
-            <select name="role" value={filterByPaymentMethod.current} onChange={(e) => handleFilterByPaymentMethod(e.target.value)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2">
+            <select name="role" value={filterByPaymentMethod.current} onChange={(e) => handleFilterByPaymentMethod(e.target.value)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2 cursor-pointer">
               <option value="">Payment Status</option>
               <option value="cod">COD</option>
               <option value="upi">UPI</option>
             </select>
-            <select name="status" value={filterByOrderStatus.current} onChange={(e) => handleFilterByOrderStatus(e.target.value)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2">
+            <select name="status" value={filterByOrderStatus.current} onChange={(e) => handleFilterByOrderStatus(e.target.value)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2 cursor-pointer">
               <option value="">Order Status</option>
               <option value="Order Confirmed">Order Confirmed</option>
               <option value="Preparing Food">Preparing Food</option>
@@ -207,7 +207,7 @@ export default function Order() {
           <div>
             <button
                onClick={handleResetFilter}
-              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
+              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer"
             >{RESET_FILTER}</button>
           </div>
         </div>
@@ -234,7 +234,7 @@ export default function Order() {
             <table className="table-fixed border-collapse  w-full">
               <thead className="bg-slate-600 text-white">
                 <tr className=" place-content-start  items-start">
-                  <th className="w-7"> <input onChange={handleCheckBoxAll} checked={orderIds.length === orders.length} type="checkbox" /> </th>
+                  <th className="w-7 cursor-pointer"> <input onChange={handleCheckBoxAll} checked={orderIds.length === orders.length} type="checkbox" /> </th>
                   <th className="font-medium text-start py-1">Order Id</th>
                   <th className="font-medium text-start">Created Date</th>
                   <th className="font-medium text-start">Customer</th>
@@ -247,7 +247,7 @@ export default function Order() {
                   </th>
                     : <th >
                       <div className="flex flex-row items-center justify-center">
-                        <RiDeleteBin5Fill onClick={() => handleConfirmationBox(-1)} className=" hover:text-red-500"></RiDeleteBin5Fill>
+                        <RiDeleteBin5Fill onClick={() => handleConfirmationBox(-1)} className=" hover:text-red-500 cursor-pointer"></RiDeleteBin5Fill>
 
                       </div>
                     </th>
@@ -260,7 +260,7 @@ export default function Order() {
                   orders.map((order, index) => {
                     return <tr key={order.id} className={index % 2 === 0 ? "border-b border-orange-100 bg-white" : "border-b border-orange-100 bg-orange-50"}>
                       <td className="text-center">
-                        <input onChange={() => handleMultipleOrderIds(order.id)} checked={orderIds.includes(order.id)} type="checkbox" />
+                        <input onChange={() => handleMultipleOrderIds(order.id)} checked={orderIds.includes(order.id)} type="checkbox" className="cursor-pointer" />
                       </td>
                       <td className="group relative">
                         <p className="text-md font-medium py-1">#{order.id.substring(0, 5)}...</p>
@@ -288,7 +288,7 @@ export default function Order() {
                       </td>
                       <td>
                         {showEditUIById === order.id ?
-                          <select name="status" onChange={(e) => handleUpdateOrder(e, order.id)} >
+                          <select className="cursor-pointer" name="status" onChange={(e) => handleUpdateOrder(e, order.id)} >
                             <option value="">Select Status</option>
                             <option value="Order Confirmed">Order Confirmed</option>
                             <option value="Preparing Food">Preparing Food</option>
@@ -301,8 +301,8 @@ export default function Order() {
                       </td>
                       <td  >
                         {orderIds.length === 0 && <div className="flex items-center justify-center gap-3">
-                          <FiEdit onClick={() => handleSetShowEditUIById(order.id)} className="text-xl text-gray-500 hover:text-gray-700" />
-                          <RiDeleteBin5Fill onClick={() => handleConfirmationBox(order.id)} className="text-red-500 text-xl hover:text-red-700" />
+                          <FiEdit onClick={() => handleSetShowEditUIById(order.id)} className="text-xl text-gray-500 hover:text-gray-700 cursor-pointer" />
+                          <RiDeleteBin5Fill onClick={() => handleConfirmationBox(order.id)} className="text-red-500 text-xl hover:text-red-700 cursor-pointer" />
                         </div>}
                       </td>
                     </tr>
