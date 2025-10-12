@@ -155,7 +155,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-row items-center justify-end gap-3">
-            <select name="category" onChange={(e) => handleCategorySelection(e.target.value)} className="bg-orange-400 text-white text-md font-medium p-2.5 rounded-md "  >
+            <select name="category" onChange={(e) => handleCategorySelection(e.target.value)} className="cursor-pointer bg-orange-400 text-white text-md font-medium p-2.5 rounded-md "  >
               <option className="bg-white text-black" value="">Category</option>
               {
                 categories.map((category) => {
@@ -166,11 +166,11 @@ export default function Home() {
             </select>
             <button
               onClick={() => navigate('/create-product')}
-              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
+              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer"
             >{ADD_PRODUCT}</button>
             <button
                onClick={handleResetFilter}
-              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
+              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer"
             >{RESET_FILTER}</button>
 
 
@@ -199,7 +199,7 @@ export default function Home() {
 
               {products.length === 0 && isLoading === false ? <p className="text-xl font-bold text-center m-auto">No products found.</p> :
                 products.map((product,index) => {
-                  return <div key={product.id} className="bg-white rounded-xl px-5 py-3 w-[328px] relative">
+                  return <div key={product.id} className="bg-white rounded-xl px-5 py-3 w-[328px] relative ">
                      
                     {isModalopen && (
                       <POPModal onClose={() => setModalOpen(false)} onOk={() => handleProductDeleteion()}>
@@ -210,8 +210,8 @@ export default function Home() {
                       </POPModal>
                     )}
                     <div className="absolute right-5 flex flex-col gap-2">
-                      <FiEdit onClick={() => navigate("/edit-product", { state: { product } })} className="h-9 w-9 p-1 rounded-sm bg-gray-200 hover:bg-gray-400 " />
-                      <MdDeleteOutline onClick={() => handleDeletePop(product.id)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200 " />
+                      <FiEdit onClick={() => navigate("/edit-product", { state: { product } })} className="h-9 w-9 p-1 rounded-sm bg-gray-200 hover:bg-gray-400 cursor-pointer" />
+                      <MdDeleteOutline onClick={() => handleDeletePop(product.id)} className="h-9 w-9 p-1 rounded-sm bg-gray-200 text-red-500 hover:bg-red-200  cursor-pointer" />
                     </div>
 
                     <img className="w-full h-[250px] object-cover rounded-xl bg-gray-300 m-auto" src={product.image} alt="Product Image" loading="lazy" />

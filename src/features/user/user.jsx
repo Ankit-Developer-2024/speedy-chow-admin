@@ -215,12 +215,12 @@ export default function User() {
               />
               <CiSearch className="" />
             </div>
-            <select name="role" value={selectedSearchRole.current} onChange={(e) => handleUserRoleSearch(e)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2">
+            <select name="role" value={selectedSearchRole.current} onChange={(e) => handleUserRoleSearch(e)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2 cursor-pointer">
               <option value="">Role</option>
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
-            <select name="status" value={selectedSearchStatus.current} onChange={(e) => handleUserStatusSearch(e)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2">
+            <select name="status" value={selectedSearchStatus.current} onChange={(e) => handleUserStatusSearch(e)} className="border border-orange-500 rounded-2xl text-md font-medium p-1 px-2 cursor-pointer">
               <option value="">Status</option>
               <option value="Active">Active</option>
               <option value="Block">Block</option>
@@ -231,11 +231,11 @@ export default function User() {
           <div className="flex flex-row items-center justify-center gap-2">
             <button
               onClick={handleResetFilter}
-              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
+              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer"
             >{RESET_FILTER}</button>
             <button
               onClick={() => navigate('/user/create-user')}
-              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500"
+              className="bg-orange-400 p-2 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer"
             >{ADD_USER}</button>
           </div>
         </div>
@@ -265,14 +265,14 @@ export default function User() {
             <table className="table-fixed border-collapse  w-full">
               <thead className="bg-slate-600 text-white">
                 <tr className=" place-content-start  items-start">
-                  <th className="w-7"> <input onChange={handleCheckBoxAll} checked={userIds.length === users.length} type="checkbox" /> </th>
+                  <th className="w-7 cursor-pointer"> <input onChange={handleCheckBoxAll} checked={userIds.length === users.length} type="checkbox" /> </th>
                   <th className="font-medium text-start py-1">Full Name</th>
                   <th className="font-medium text-start">Email</th>
                   <th className="font-medium text-start">Status</th>
                   <th className="font-medium text-start">Role</th>
                   <th className="font-medium text-start">Joined Date</th>
                   {userIds.length === 0 ? <th className="font-medium text-start ">Action</th>
-                    : <th className="text-center"><RiDeleteBin5Fill onClick={() => handleConfirmationBox()} className=" hover:text-red-500"></RiDeleteBin5Fill></th>
+                    : <th className="text-center"><RiDeleteBin5Fill onClick={() => handleConfirmationBox()} className=" hover:text-red-500 cursor-pointer"></RiDeleteBin5Fill></th>
                   }
                 </tr>
               </thead>
@@ -281,8 +281,8 @@ export default function User() {
                 {
                   users.map((user, index) => {
                     return <tr key={user.id} className={index % 2 === 0 ? "border-b border-orange-100 bg-white" : "border-b border-orange-100 bg-orange-50"}>
-                      <td className="text-center">
-                        <input onChange={() => handleMultipleUserIds(user.id)} checked={userIds.includes(user.id)} type="checkbox" />
+                      <td className="text-center r">
+                        <input  onChange={() => handleMultipleUserIds(user.id)} checked={userIds.includes(user.id)} type="checkbox" className="cursor-pointer" />
                       </td>
                       <td className="flex  gap-2 py-2">
                         { user.image ? <img className="w-6 h-6 rounded-full" src={user.image} alt="img" loading="lazy" /> : <p className="w-6 h-6 rounded-full bg-orange-400 text-white text-center">{getCaptilizeFirstLatter(user.name).substring(0,1)}</p> }
@@ -293,18 +293,18 @@ export default function User() {
                       </td>
                       <td>
                         {showEditUIById === user.id ?
-                          <select name="status" onChange={(e) => handleUserUpdate(e, user.id)} className="text-md font-medium p-0 m-0">
+                          <select name="status" onChange={(e) => handleUserUpdate(e, user.id)} className="text-md font-medium p-0 m-0 cursor-pointer"  >
                             <option value="">Select Status</option>
                             <option value="Active">Active</option>
                             <option value="Block">Block</option>
                             <option value="Delete">Delete</option>
                           </select>
-                          : <span className={user.status == 'Active' ? "bg-green-500 text-white rounded-2xl px-2 py-0.5 text-md font-medium" : "bg-red-600 text-white rounded-2xl px-2 py-0.5 text-md font-medium"}>{user.status}</span>
+                          : <span className={user.status == 'Active' ? "bg-green-500 text-white rounded-2xl px-2 py-0.5 text-md font-medium  " : "bg-red-600 text-white rounded-2xl px-2 py-0.5 text-md font-medium"}>{user.status}</span>
                         }
                       </td>
                       <td>
                         {showEditUIById === user.id ?
-                          <select name="role" onChange={(e) => handleUserUpdate(e, user.id)} className="text-md font-medium p-0 m-0">
+                          <select name="role" onChange={(e) => handleUserUpdate(e, user.id)} className="text-md font-medium p-0 m-0 cursor-pointer">
                             <option value="">Role</option>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
@@ -316,8 +316,8 @@ export default function User() {
                       </td>
                       <td className="items-start text-center ">
                         {userIds.length === 0 && <div className="flex gap-3">
-                          <FiEdit onClick={() => handleSetShowEditUIById(user.id)} className="text-xl text-gray-500 hover:text-gray-700" />
-                          <RiDeleteBin5Fill onClick={() => handleConfirmationBox(user.id)} className="text-red-500 text-xl hover:text-red-700" />
+                          <FiEdit onClick={() => handleSetShowEditUIById(user.id)} className="text-xl text-gray-500 hover:text-gray-700 cursor-pointer" />
+                          <RiDeleteBin5Fill onClick={() => handleConfirmationBox(user.id)} className="text-red-500 text-xl hover:text-red-700 cursor-pointer" />
                         </div>}
                       </td>
                     </tr>

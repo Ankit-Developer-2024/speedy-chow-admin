@@ -76,7 +76,7 @@ export const LogIn = function () {
                         />
                         {errors.password?.message && <p className="text-md text-red-500">{errors.password.message}</p>}
 
-                        <input className="bg-orange-400 mt-2 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500" type="submit" value={LOGIN} />
+                        <input className="bg-orange-400 mt-2 py-2 px-5 rounded-md font-medium text-white hover:bg-amber-500 cursor-pointer" type="submit" value={LOGIN} />
                         <span className="text-md  ml-3">Already have an ccount? <Link to='/signup' className="underline font-medium hover:text-orange-500">{SIGN_UP} </Link> </span>
 
                     </form>
