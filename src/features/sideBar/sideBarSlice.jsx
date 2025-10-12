@@ -23,7 +23,7 @@ const initialState = {
     loading: false,
     success: false,
     message: null,
-    user:null
+    user:""
 };
 
 
@@ -55,7 +55,7 @@ export const sideBarSlice = createSlice({
                 state.loading = false,
                 state.success = true,
                 state.message = actions.payload.message
-                state.user=null
+                state.user=""
             })
             .addCase(signOutAsync.rejected, (state, actions) => {
                 state.loading = false,

@@ -42,10 +42,9 @@ export const LogIn = function () {
                     <p className="text-md font-medium text-gray-500">Modern admin help</p>
                     <p className="text-md font-light text-gray-600">Managing products, users, and order statuses, alongside an efficient fuzzy search, can be improved by focusing on robust data structures, clear API design, and optimized search algorithms.</p>
                     <div className="flex flex-row items-center justify-start relative">
-                         <img className="rounded-[100%]  object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
-                        <img className="rounded-[100%] absolute left-15  object-cover w-[200px] h-[200px] mt-7" src={pastryImg} alt="images" />
-                        <img className="rounded-[100%]   object-cover w-[200px] h-[200px] mt-7" src={burgerImg} alt="images" />
-                       <img className="rounded-[100%] absolute left-85  object-cover w-[200px] h-[200px] mt-7" src={pastryImg} alt="images" />
+                         <img className="rounded-[100%]  object-cover w-[40%] h-[200px] mt-7" src={burgerImg} alt="images" />
+                         <img className="rounded-[100%] absolute left-25  object-cover w-[40%]  h-[200px] mt-7" src={pastryImg} alt="images" />
+                         <img className="rounded-[100%]   object-cover w-[40%]  h-[200px] mt-7" src={burgerImg} alt="images" />
                        
                        
                     </div>
