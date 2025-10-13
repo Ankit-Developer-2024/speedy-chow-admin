@@ -14,6 +14,16 @@ The project is powered by a **Node.js + Express + MongoDB** backend and features
 
 ---
 
+# 🧑‍💼 Speedy Chow - Admin Panel
+
+This repository contains the **Admin Panel** for the **Speedy Chow** food ordering system, built using **React.js**.  
+The panel allows restaurant administrators to **manage products, users, and orders**, and view business insights through a dashboard.
+
+🔗 **Related Projects**
+- [User App (Flutter)](https://github.com/Ankit-Developer-2024/speedy-chow-app)
+- [Backend (Node.js)](https://github.com/Ankit-Developer-2024/speedy-chow-backend)
+
+
 ## 🚀 Project Overview
 
 | Section | Description |
